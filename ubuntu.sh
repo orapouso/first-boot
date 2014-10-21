@@ -1,23 +1,23 @@
 #oracle-java
-sudo add-apt-repository ppa:webupd8team/java
+sudo add-apt-repository -y ppa:webupd8team/java
 
 #nuvola player
-sudo apt-add-repository ppa:nuvola-player-builders/stable
+sudo apt-add-repository -y ppa:nuvola-player-builders/stable
 
 #terminator
-sudo add-apt-repository ppa:gnome-terminator
+sudo add-apt-repository -y ppa:gnome-terminator
 
 #node
 sudo add-apt-repository -y ppa:chris-lea/node.js
 
 #numix
-sudo add-apt-repository ppa:numix/ppa
+sudo add-apt-repository -y ppa:numix/ppa
 
 #sublime text 3
-sudo add-apt-repository ppa:webupd8team/sublime-text-3
+sudo add-apt-repository -y ppa:webupd8team/sublime-text-3
 
 #atom text editor
-sudo add-apt-repository ppa:webupd8team/atom
+sudo add-apt-repository -y ppa:webupd8team/atom
 
 sudo apt-get update
 
@@ -36,6 +36,16 @@ sudo apt-get install numix-gtk-theme numix-icon-theme-circle numix-icon-theme-sh
 wget -P /tmp https://dl.google.com/linux/direct/google-chrome-unstable_current_amd64.deb
 wget -P /tmp https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 
-sudo pkg -i /tmp/google-chrome-stable_current_amd64.deb google-chrome-unstable_current_amd64.deb
+sudo dpkg -i /tmp/google-chrome-stable_current_amd64.deb google-chrome-unstable_current_amd64.deb
 
 sudo pip install virtualenv
+
+#oh-my-zsh shell
+curl -L http://install.ohmyz.sh | sh
+
+#oh-my-fish shell
+curl -L https://github.com/bpinto/oh-my-fish/raw/master/tools/install.fish | fish
+grep -q '^/usr/bin/fish$' /etc/shells; or echo '/usr/bin/fish' | sudo tee -a /etc/shells
+chsh -s /usr/bin/fish
+
+
