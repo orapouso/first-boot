@@ -1,3 +1,8 @@
+#!/bin/bash
+
+# disable sudo password timeout
+sudo sh -c 'echo "\nDefaults timestamp_timeout=-1">>/etc/sudoers'
+
 # terminator
 sudo add-apt-repository -y ppa:gnome-terminator
 
@@ -19,24 +24,34 @@ sudo add-apt-repository -y ppa:webupd8team/atom
 
 sudo apt-get update
 
+
 # general
-sudo apt-get install chromium-browser vim vlc easytag terminator gdebi cifs-util zsh ubuntu-restricted-extras
+sudo apt-get install -y chromium-browser vim vlc easytag terminator gdebi cifs-utils zsh ubuntu-restricted-extras
 
 # dev
-sudo apt-get install mysql-server mysql-workbench meld git gitg git-flow openjdk-8-jre python-software-properties python python-pip mongodb-server atom sublime-text-installer
+# setting mysql root password
+sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password rootroot'
+sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password rootroot'
+sudo apt-get install -y mysql-server mysql-workbench meld git gitg git-flow openjdk-8-jre python-software-properties python python-pip mongodb-server atom sublime-text-installer
 
 # gaming
-sudo apt-get install playonlinux
+# setting msfonts default eula
+sudo debconf-set-selections <<< 'ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true'
+sudo apt-get install -y playonlinux steam
 
 # numix theme
-sudo apt-get install numix-gtk-theme numix-icon-theme-circle numix-icon-theme-shine numix-icon-theme-utouch
+sudo apt-get install -y numix-gtk-theme numix-icon-theme-circle
 
+# google chrome
 wget -P /tmp https://dl.google.com/linux/direct/google-chrome-unstable_current_amd64.deb
 wget -P /tmp https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-wget -P /tmp http://media.steampowered.com/client/installer/steam.deb
+sudo dpkg -i /tmp/google-chrome-stable_current_amd64.deb /tmp/google-chrome-unstable_current_amd64.deb
 
-sudo dpkg -i /tmp/google-chrome-stable_current_amd64.deb /tmp/google-chrome-unstable_current_amd64.deb /tmp/steam.deb
+# slack
+wget -P /tmp https://slack-ssb-updates.global.ssl.fastly.net/linux_releases/slack-desktop-1.2.6-amd64.deb
+sudo dpkg -i /tmp/slack-desktop-1.2.6-amd64.deb
 
+# python virtualenv
 sudo pip install virtualenv
 
 #oh-my-zsh shell
@@ -46,8 +61,12 @@ sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/i
 git clone https://github.com/basherpm/basher.git ~/.basher
 echo 'export PATH="$HOME/.basher/bin:$PATH"' >> ~/.zshrc
 echo 'eval "$(basher init -)"' >> ~/.zshrc
+source ~/.zshrc
 
 # nave.sh - Virtual Environments for Node
 basher install isaacs/nave
-nave install 5
-sudo nave usemain 5
+nave install stable
+sudo env "PATH=$PATH" nave usemain stable
+
+# re-enable sudo password timeout
+sudo sed -i "/Defaults timestamp_timeout=-1/d" /etc/sudoers
