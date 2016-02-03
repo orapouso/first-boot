@@ -24,19 +24,22 @@ sudo add-apt-repository -y ppa:webupd8team/atom
 
 sudo apt-get update
 
+# setting msfonts default eula
+echo 'ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true' | sudo debconf-set-selections
+
+# setting mysql root password
+echo 'mysql-server mysql-server/root_password password rootroot' | sudo debconf-set-selections
+echo 'mysql-server mysql-server/root_password_again password rootroot' | sudo debconf-set-selections
+echo 'steam steam/question select I AGREE' | sudo debconf-set-selections
+echo 'steam steam/licence note ' | sudo debconf-set-selections
 
 # general
 sudo apt-get install -y chromium-browser vim vlc easytag terminator gdebi cifs-utils zsh ubuntu-restricted-extras
 
 # dev
-# setting mysql root password
-sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password rootroot'
-sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password rootroot'
 sudo apt-get install -y mysql-server mysql-workbench meld git gitg git-flow openjdk-8-jre python-software-properties python python-pip mongodb-server atom sublime-text-installer
 
 # gaming
-# setting msfonts default eula
-sudo debconf-set-selections <<< 'ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true'
 sudo apt-get install -y playonlinux steam
 
 # numix theme
